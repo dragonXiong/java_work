@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE xml>
+<ehcache updateCheck="false" name="defaultCache">
+	
+	<!-- 
+		name： Cache的名称，必须是唯一的(ehcache会把这个cache放到HashMap里)。
+		maxEntriesLocalHeap：堆内存中最大缓存对象数，0没有限制
+		maxElementsInMemory： 在内存中缓存的element的最大数目。 
+		maxElementsOnDisk： 在磁盘上缓存的element的最大数目，默认值为0，表示不限制。 
+		eternal： 设定缓存的elements是否永远不过期。如果为true，则缓存的数据始终有效，如果为false那么还要根据timeToIdleSeconds，timeToLiveSeconds判断。 
+		overflowToDisk： 如果内存中数据超过内存限制，是否要缓存到磁盘上。
+		timeToIdleSeconds： 对象空闲时间，指对象在多长时间没有被访问就会失效。只对eternal为false的有效。默认值0，表示一直可以访问。
+		timeToLiveSeconds： 对象存活时间，指对象从创建到失效所需要的时间。只对eternal为false的有效。默认值0，表示一直可以访问。
+		diskPersistent： 是否在磁盘上持久化。指重启jvm后，数据是否有效。默认为false。 
+		diskExpiryThreadIntervalSeconds： 对象检测线程运行时间间隔。标识对象状态的线程多长时间运行一次。 
+		diskSpoolBufferSizeMB： DiskStore使用的磁盘大小，默认值30MB。每个cache使用各自的DiskStore。 
+		memoryStoreEvictionPolicy： 如果内存中数据超过内存限制，向磁盘缓存时的策略。默认值LRU，可选FIFO、LFU。
+	-->
+	
+	<diskStore path="${catalina.base}/temp/ehcache" />
+	
+	<!-- 默认缓存配置. -->
+	<defaultCache maxEntriesLocalHeap="100" eternal="false" timeToIdleSeconds="300" timeToLiveSeconds="600"
+		overflowToDisk="true" maxEntriesLocalDisk="100000" />
+		
+	<!-- 系统缓存 -->
+	<cache name="sysCache" maxEntriesLocalHeap="100" eternal="true" overflowToDisk="true"/>
+</ehcache>

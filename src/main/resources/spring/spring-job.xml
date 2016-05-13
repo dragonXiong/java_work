@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:task="http://www.springframework.org/schema/task"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+                     http://www.springframework.org/schema/beans/spring-beans.xsd
+					 http://www.springframework.org/schema/task 
+					 http://www.springframework.org/schema/task/spring-task-3.2.xsd">
+	<!-- 2分钟跑一次，测试用
+	 <value>0 0/2 * * * ?</value> 
+	cron表达式 ， 每天凌晨1点跑一次
+	 <value>0 0 1 * * ?</value> -->
+	
+	<bean id="demoTask" class="com.whty.web.job.DemoTask" />
+	
+    <task:scheduled-tasks>  
+        <task:scheduled ref="demoTask" method="run" cron="0 0/2 * * * ?" />
+    </task:scheduled-tasks>
+
+</beans>

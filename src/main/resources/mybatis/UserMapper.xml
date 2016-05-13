@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.whty.web.mapper.UserMapper">
+	<resultMap id="BaseResultMap" type="com.whty.web.model.User">
+		<id column="ID" property="id" jdbcType="VARCHAR" />
+		<result column="LOGIN_NAME" property="loginName" jdbcType="VARCHAR" />
+		<result column="NAME" property="name" jdbcType="VARCHAR" />
+		<result column="PASSWORD" property="password" jdbcType="VARCHAR" />
+		<result column="CREATE_DATE" property="createDate" jdbcType="TIMESTAMP" />
+	</resultMap>
+	<sql id="Base_Column_List">
+		ID, LOGIN_NAME, NAME, PASSWORD, CREATE_DATE
+	</sql>
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap"
+		parameterType="java.lang.String">
+		select
+		<include refid="Base_Column_List" />
+		from USER
+		where ID = #{id,jdbcType=VARCHAR}
+	</select>
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+		delete from T_USER
+		where ID = #{id,jdbcType=VARCHAR}
+	</delete>
+	<insert id="insert" parameterType="com.whty.web.model.User">
+		insert into T_USER (ID, LOGIN_NAME, NAME,
+		PASSWORD, CREATE_DATE
+		)
+		values (#{id,jdbcType=VARCHAR}, #{loginName,jdbcType=VARCHAR},
+		#{name,jdbcType=VARCHAR},
+		#{password,jdbcType=VARCHAR}, #{createDate,jdbcType=DATE}
+		)
+	</insert>
+	<insert id="insertSelective" parameterType="com.whty.web.model.User">
+		insert into T_USER
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				ID,
+			</if>
+			<if test="loginName != null">
+				LOGIN_NAME,
+			</if>
+			<if test="name != null">
+				NAME,
+			</if>
+			<if test="password != null">
+				PASSWORD,
+			</if>
+			<if test="createDate != null">
+				CREATE_DATE,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				#{id,jdbcType=VARCHAR},
+			</if>
+			<if test="loginName != null">
+				#{loginName,jdbcType=VARCHAR},
+			</if>
+			<if test="name != null">
+				#{name,jdbcType=VARCHAR},
+			</if>
+			<if test="password != null">
+				#{password,jdbcType=VARCHAR},
+			</if>
+			<if test="createDate != null">
+				#{createDate,jdbcType=DATE},
+			</if>
+		</trim>
+	</insert>
+	<update id="updateByPrimaryKeySelective" parameterType="com.whty.web.model.User">
+		update T_USER
+		<set>
+			<if test="loginName != null">
+				LOGIN_NAME = #{loginName,jdbcType=VARCHAR},
+			</if>
+			<if test="name != null">
+				NAME = #{name,jdbcType=VARCHAR},
+			</if>
+			<if test="password != null">
+				PASSWORD = #{password,jdbcType=VARCHAR},
+			</if>
+			<if test="createDate != null">
+				CREATE_DATE = #{createDate,jdbcType=DATE},
+			</if>
+		</set>
+		where ID = #{id,jdbcType=VARCHAR}
+	</update>
+	<select id="selectList" resultMap="BaseResultMap" parameterType="com.whty.web.model.User">
+		select
+		<include refid="Base_Column_List" />
+		from T_USER
+		<where>
+			<if test="name !=null and name != '' ">
+				<!-- 模糊查找建议用instr,用like会有通配符 _和% 的sql注入问题 -->
+				instr(name,#{name,jdbcType=VARCHAR})>0
+			</if>
+			<if test="loginName !=null and loginName != '' ">
+				instr(LOGIN_NAME,#{loginName,jdbcType=VARCHAR})>0
+			</if>
+		</where>
+	</select>
+	
+	<select id="selectOne" resultMap="BaseResultMap" parameterType="com.whty.web.model.User">
+		select
+		<include refid="Base_Column_List" />
+		from T_USER
+		<where>
+			<if test="loginName !=null and loginName != '' ">
+				LOGIN_NAME = #{loginName,jdbcType=VARCHAR}
+			</if>
+		</where>
+	</select>
+	
+	<delete id="deleteByIds" parameterType="java.util.List">
+		delete from T_USER where ID in
+		<foreach item="item" index="index" collection="list" 
+                         open="(" separator="," close=")">
+                        #{item}
+        </foreach>
+	</delete>
+	
+	<insert id="batchSave" parameterType="java.util.List">
+  		insert into T_USER (ID, LOGIN_NAME, NAME,PASSWORD, CREATE_DATE)
+  		<foreach collection="list" item="item" index="index" separator="union all" >
+         　  		select  
+       		 	#{item.id,jdbcType=VARCHAR},
+       		 	#{item.loginName,jdbcType=VARCHAR}, 
+       		 	#{item.name,jdbcType=VARCHAR},
+       		 	#{item.password,jdbcType=VARCHAR},
+		      	#{item.createDate,jdbcType=TIMESTAMP}
+         	from dual
+        </foreach>
+   </insert>
+</mapper>

@@ -1,0 +1,30 @@
+@CHARSET "UTF-8";
+.glyphicon{cursor: pointer;}
+.fixed-table-toolbar .bars,.fixed-table-toolbar .columns,.fixed-table-toolbar .search {
+	margin-top:0px;
+	margin-bottom:2px;
+}
+.panel-heading,.panel-body {
+    padding: 5px 10px;
+}
+/* 鼠标在表格划动时的颜色 */
+.table-hover > tbody > tr:hover{
+	background-color:#d9edf7;
+}
+/* check的颜色 */
+.fixed-table-container tbody .selected td {
+    background-color: #d9edf7;
+}
+.form-group {
+    margin-bottom: 5px;
+}
+.main-body{
+	padding-right: 5px;
+    padding-left: 0px;
+    margin-right: auto;
+    margin-left: auto;
+}
+/* 去掉chrome下点击表头出现的蓝色边框 */
+.fixed-table-container thead th{outline:none;}
+
+.saveForm .form-group{border-bottom:1px dashed #DDD;}

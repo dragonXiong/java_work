@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration scan="true" scanPeriod="60 seconds" debug="false">
+
+	<contextName>project</contextName>
+	
+	<!-- 日志的输出路径 -->
+    <property name="logPath" value="${catalina.base}/logs"/>
+	<!-- 配置日志的滚动时间 -->
+	<property name="maxHistory" value="90"/>
+	
+	
+	<!-- 打印日志到控制台 -->
+    <appender name="rootConsole" class="ch.qos.logback.core.ConsoleAppender">
+    	<!-- encoder 在控制台打印日志的格式 -->  
+        <encoder>
+            <pattern>%d{yyyyMMdd HH:mm:ss.SSS} %-5level %logger{36}.%M:%line - %msg%n</pattern>
+        </encoder>
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">   
+	      <level>DEBUG</level>   
+	    </filter>
+    </appender>
+
+    <!--
+    	打印业务逻辑级别的日志到service文件下
+    -->
+    <appender name="serviceRollingFile" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${logPath}/service/service.log</file>
+
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${logPath}/service/service.%d{yyyy-MM-dd}.log</fileNamePattern>
+            <!-- 设置日志的滚动时间 -->
+            <maxHistory>${maxHistory}</maxHistory>
+        </rollingPolicy>
+        <encoder>
+            <pattern>%d{yyyyMMdd HH:mm:ss.SSS} %-5level %logger{36}.%M:%line - %msg%n</pattern>
+            <charset>UTF-8</charset>
+        </encoder>
+    </appender>
+	
+  	<logger name="druid.sql.Statement" level="DEBUG" addtivity="false">
+        <!-- <appender-ref ref="rootConsole"/>
+        <appender-ref ref="serviceRollingFile"/> -->
+    </logger> 
+    
+	<!-- <logger name="com.whty" level="INFO" addtivity="false">
+        <appender-ref ref="rootConsole"/>
+        <appender-ref ref="serviceRollingFile"/>
+    </logger> -->
+    <root level="INFO">
+        <appender-ref ref="rootConsole"/>
+        <appender-ref ref="serviceRollingFile"/>
+    </root>
+    
+</configuration>
